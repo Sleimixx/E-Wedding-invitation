@@ -2,7 +2,7 @@
 import { useRef } from "react";
 
 export default function Hero({ config, onStart }) {
-  const { couple, date, hero } = config;
+  const { date, hero } = config;
   const sectionRef = useRef(null);
 
   function handleStart() {
@@ -15,18 +15,16 @@ export default function Hero({ config, onStart }) {
 
   return (
     <section className="hero" ref={sectionRef}>
-      <div
-        className="hero-bg"
-        style={{ backgroundImage: `url(${hero.backgroundImage})` }}
-      />
+      <div className="hero-bg" style={{ backgroundImage: `url(${hero.backgroundImage})` }} />
       <div className="hero-overlay" />
 
       <div className="hero-content">
-        <h1 className="hero-names">
-          <span className="hero-first-name">Henry</span>
-          <span className="hero-and">&amp;</span>
-          <span className="hero-first-name">Estelle</span>
-        </h1>
+        <span className="hero-first-name">Henry</span>
+        <div className="hero-couple-img-wrap">
+          <img src="/images/eid2.jpeg" alt="Henry & Estelle" className="hero-couple-img" />
+        </div>
+        <span className="hero-and">&amp;</span>
+        <span className="hero-first-name">Estelle</span>
         <div className="hero-date">{date.display}</div>
       </div>
 

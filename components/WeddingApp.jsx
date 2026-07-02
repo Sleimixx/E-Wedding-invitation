@@ -20,19 +20,18 @@ export default function WeddingApp({ config, children }) {
   }
 
   useEffect(() => {
-    function onFirstInteraction() {
+    // touchstart and click are the only trusted user-gesture events
+    // that iOS Safari allows audio to start from.
+    function onGesture() {
       startMusic();
-      window.removeEventListener("scroll", onFirstInteraction);
-      window.removeEventListener("touchstart", onFirstInteraction);
-      window.removeEventListener("touchmove", onFirstInteraction);
+      document.removeEventListener("touchstart", onGesture);
+      document.removeEventListener("click", onGesture);
     }
-    window.addEventListener("scroll", onFirstInteraction, { passive: true });
-    window.addEventListener("touchstart", onFirstInteraction, { passive: true });
-    window.addEventListener("touchmove", onFirstInteraction, { passive: true });
+    document.addEventListener("touchstart", onGesture, { passive: true });
+    document.addEventListener("click", onGesture);
     return () => {
-      window.removeEventListener("scroll", onFirstInteraction);
-      window.removeEventListener("touchstart", onFirstInteraction);
-      window.removeEventListener("touchmove", onFirstInteraction);
+      document.removeEventListener("touchstart", onGesture);
+      document.removeEventListener("click", onGesture);
     };
   }, []);
 
