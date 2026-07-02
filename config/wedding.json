@@ -1,0 +1,80 @@
+{
+  "couple": {
+    "brideName": "Sarah",
+    "groomName": "James",
+    "hashtag": "#SarahAndJames2026"
+  },
+  "date": {
+    "iso": "2026-09-12T16:00:00",
+    "display": "September 12, 2026",
+    "timezone": "America/New_York"
+  },
+  "hero": {
+    "backgroundImage": "/images/hero.jpg",
+    "tagline": "Together with their families",
+    "subtitle": "invite you to celebrate their wedding"
+  },
+  "music": {
+    "src": "/music/background.mp3",
+    "autoplay": true,
+    "loop": true,
+    "volume": 0.5
+  },
+  "story": {
+    "title": "Our Story",
+    "paragraphs": [
+      "We met on a rainy afternoon in a coffee shop in Brooklyn, both hiding from the downpour.",
+      "Five years, three apartments, and one very spoiled dog later, we're finally tying the knot.",
+      "We can't wait to share this day with the people who made our story possible."
+    ],
+    "photo": "/images/story.jpg"
+  },
+  "events": [
+    {
+      "name": "Ceremony",
+      "date": "September 12, 2026",
+      "time": "4:00 PM",
+      "venue": "St. Mary's Chapel",
+      "address": "123 Chapel Lane, Brooklyn, NY",
+      "mapsUrl": "https://maps.google.com/?q=St.+Mary's+Chapel+Brooklyn+NY",
+      "dressCode": "Formal"
+    },
+    {
+      "name": "Reception",
+      "date": "September 12, 2026",
+      "time": "6:30 PM",
+      "venue": "The Grand Ballroom",
+      "address": "456 Park Avenue, Brooklyn, NY",
+      "mapsUrl": "https://maps.google.com/?q=The+Grand+Ballroom+Brooklyn+NY",
+      "dressCode": "Black tie"
+    }
+  ],
+  "gallery": [
+    "/images/gallery-1.jpg",
+    "/images/gallery-2.jpg",
+    "/images/gallery-3.jpg",
+    "/images/gallery-4.jpg",
+    "/images/gallery-5.jpg",
+    "/images/gallery-6.jpg"
+  ],
+  "registry": {
+    "message": "Your presence is the greatest gift. If you'd like to contribute to our new life together, here are a few places we've registered.",
+    "links": [
+      { "label": "Honeymoon Fund", "url": "https://example.com/honeymoon" },
+      { "label": "Home Registry", "url": "https://example.com/registry" }
+    ]
+  },
+  "rsvp": {
+    "deadline": "August 15, 2026",
+    "message": "Please let us know if you can join us by the date below."
+  },
+  "theme": {
+    "primary": "#8b7355",
+    "accent": "#c9a87c",
+    "background": "#faf8f5",
+    "text": "#2d2620",
+    "fontHeading": "'Playfair Display', Georgia, serif",
+    "fontBody": "'Inter', -apple-system, BlinkMacSystemFont, sans-serif",
+    "fontScript": "'Great Vibes', cursive"
+  }
+}
