@@ -181,7 +181,358 @@ button {
   50% { transform: translateY(-5px); }
 }
 
-/* Countdown */
+/* ── Shared slide base ── */
+.slide {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 4rem 1.5rem;
+}
+
+/* ── Slide 2: Invitation ── */
+.invitation-slide {
+  background: var(--color-bg);
+}
+
+.invitation-inner {
+  max-width: 640px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1.2rem;
+}
+
+.invitation-quote {
+  font-family: var(--font-script);
+  font-size: clamp(1.6rem, 4vw, 2.4rem);
+  color: var(--color-primary);
+  line-height: 1.4;
+}
+
+.invitation-verse {
+  font-size: 0.85rem;
+  letter-spacing: 0.25em;
+  text-transform: uppercase;
+  color: var(--color-accent);
+}
+
+.invitation-divider {
+  width: 60px;
+  height: 1px;
+  background: var(--color-accent);
+  margin: 0.5rem 0;
+}
+
+.invitation-parents {
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+}
+
+.invitation-family-name {
+  font-family: var(--font-heading);
+  font-size: 1.15rem;
+  color: var(--color-text);
+  letter-spacing: 0.05em;
+  text-decoration: none;
+  border-bottom: 1px solid var(--color-accent);
+  padding-bottom: 2px;
+  transition: color 0.2s;
+}
+
+.invitation-family-name:hover {
+  color: var(--color-primary);
+  opacity: 1;
+}
+
+.invitation-honor {
+  font-size: 1rem;
+  letter-spacing: 0.1em;
+  color: var(--color-text);
+  opacity: 0.8;
+  margin-top: 0.5rem;
+}
+
+.invitation-couple {
+  font-family: var(--font-script);
+  font-size: clamp(2.5rem, 7vw, 4rem);
+  color: var(--color-primary);
+}
+
+/* ── Slides 3 & 4: Ceremony / Venue ── */
+.ceremony-slide {
+  background: var(--color-primary);
+  color: white;
+}
+
+.venue-slide {
+  background: #2a1f14;
+  color: white;
+}
+
+.event-slide-inner {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.9rem;
+  max-width: 500px;
+}
+
+.event-slide-icon {
+  font-size: 2.5rem;
+  margin-bottom: 0.5rem;
+}
+
+.event-slide-title {
+  font-family: var(--font-heading);
+  font-size: clamp(1.8rem, 5vw, 2.8rem);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: inherit;
+}
+
+.event-slide-time {
+  font-family: var(--font-script);
+  font-size: clamp(2rem, 6vw, 3rem);
+  color: var(--color-accent);
+}
+
+.event-slide-divider {
+  width: 50px;
+  height: 1px;
+  background: rgba(255,255,255,0.4);
+  margin: 0.4rem 0;
+}
+
+.event-slide-venue {
+  font-size: 1.2rem;
+  font-weight: 500;
+  letter-spacing: 0.05em;
+}
+
+.event-slide-location {
+  font-size: 0.95rem;
+  opacity: 0.75;
+  letter-spacing: 0.1em;
+}
+
+.event-slide-btn {
+  margin-top: 1rem;
+  display: inline-block;
+  padding: 0.8rem 2.2rem;
+  border: 1px solid rgba(255,255,255,0.7);
+  border-radius: 999px;
+  color: white;
+  font-size: 0.85rem;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  text-decoration: none;
+  transition: background 0.2s;
+}
+
+.event-slide-btn:hover {
+  background: rgba(255,255,255,0.15);
+  opacity: 1;
+  color: white;
+}
+
+/* ── Slide 5: Gift Registry ── */
+.registry-slide {
+  background: #fdf6ee;
+}
+
+.registry-slide-inner {
+  max-width: 560px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1rem;
+}
+
+.registry-slide-msg {
+  font-family: var(--font-script);
+  font-size: clamp(1.5rem, 4vw, 2.2rem);
+  color: var(--color-primary);
+  line-height: 1.5;
+}
+
+.registry-slide-divider {
+  width: 50px;
+  height: 1px;
+  background: var(--color-accent);
+  margin: 0.5rem 0;
+}
+
+.registry-slide-sub {
+  font-size: 0.95rem;
+  color: var(--color-text);
+  opacity: 0.75;
+  letter-spacing: 0.05em;
+}
+
+.registry-slide-brand {
+  font-family: var(--font-heading);
+  font-size: 1.5rem;
+  letter-spacing: 0.25em;
+  color: var(--color-primary);
+  text-transform: uppercase;
+}
+
+.registry-slide-account {
+  font-size: 1rem;
+  letter-spacing: 0.1em;
+  color: var(--color-text);
+  opacity: 0.8;
+}
+
+/* ── Slide 6: RSVP ── */
+.rsvp-slide {
+  background: white;
+}
+
+.rsvp-slide-inner {
+  max-width: 460px;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1.5rem;
+}
+
+.rsvp-slide-title {
+  font-family: var(--font-heading);
+  font-size: 2.2rem;
+  color: var(--color-primary);
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+}
+
+.rsvp-slide-form {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.rsvp-slide-input {
+  width: 100%;
+  padding: 1rem 1.2rem;
+  border: 1px solid rgba(0,0,0,0.15);
+  border-radius: 8px;
+  font-family: inherit;
+  font-size: 1rem;
+  text-align: center;
+  background: #faf8f5;
+  color: var(--color-text);
+}
+
+.rsvp-slide-input:focus {
+  outline: none;
+  border-color: var(--color-primary);
+}
+
+.rsvp-slide-persons,
+.rsvp-slide-attend {
+  display: flex;
+  gap: 0.75rem;
+}
+
+.rsvp-persons-btn,
+.rsvp-attend-btn {
+  flex: 1;
+  padding: 0.85rem 0.5rem;
+  border: 1px solid var(--color-primary);
+  border-radius: 8px;
+  background: transparent;
+  color: var(--color-primary);
+  font-size: 0.9rem;
+  letter-spacing: 0.08em;
+  transition: all 0.2s;
+}
+
+.rsvp-persons-btn.active,
+.rsvp-persons-btn:hover {
+  background: var(--color-primary);
+  color: white;
+}
+
+.rsvp-attend-btn.accept.active,
+.rsvp-attend-btn.accept:hover {
+  background: #2d6a2d;
+  border-color: #2d6a2d;
+  color: white;
+}
+
+.rsvp-attend-btn.decline.active,
+.rsvp-attend-btn.decline:hover {
+  background: #8b2020;
+  border-color: #8b2020;
+  color: white;
+}
+
+.rsvp-slide-submit {
+  width: 100%;
+  padding: 1rem;
+  background: var(--color-primary);
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-size: 1rem;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  transition: opacity 0.2s;
+}
+
+.rsvp-slide-submit:hover { opacity: 0.88; }
+.rsvp-slide-submit:disabled { opacity: 0.45; cursor: not-allowed; }
+
+.rsvp-slide-status {
+  text-align: center;
+  padding: 0.9rem;
+  border-radius: 8px;
+  font-size: 0.95rem;
+}
+
+.rsvp-slide-status.ok { background: #e8f5e8; color: #2d5a2d; }
+.rsvp-slide-status.err { background: #fdeaea; color: #8b2020; }
+
+/* ── Slide 7: Closing ── */
+.closing-slide {
+  background: var(--color-primary);
+  color: white;
+}
+
+.closing-inner {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1.5rem;
+  max-width: 560px;
+}
+
+.closing-quote {
+  font-family: var(--font-script);
+  font-size: clamp(1.6rem, 4.5vw, 2.5rem);
+  line-height: 1.5;
+  color: rgba(255,255,255,0.95);
+}
+
+.closing-names {
+  font-family: var(--font-script);
+  font-size: clamp(2rem, 6vw, 3.5rem);
+  color: var(--color-accent);
+}
+
+.closing-date {
+  font-size: 0.85rem;
+  letter-spacing: 0.3em;
+  text-transform: uppercase;
+  opacity: 0.75;
+}
+
+/* ── Countdown (kept for future use) ── */
 .countdown {
   display: flex;
   justify-content: center;
