@@ -122,9 +122,8 @@ button {
   width: 100%;
   height: auto;
   display: block;
-  /* Fade edges to blend image into the slide background */
-  -webkit-mask-image: radial-gradient(ellipse 88% 88% at 50% 45%, black 45%, rgba(0,0,0,0.6) 65%, transparent 100%);
-  mask-image: radial-gradient(ellipse 88% 88% at 50% 45%, black 45%, rgba(0,0,0,0.6) 65%, transparent 100%);
+  -webkit-mask-image: radial-gradient(ellipse 72% 72% at 50% 42%, black 25%, rgba(0,0,0,0.5) 50%, transparent 75%);
+  mask-image: radial-gradient(ellipse 72% 72% at 50% 42%, black 25%, rgba(0,0,0,0.5) 50%, transparent 75%);
 }
 
 .hero-date {

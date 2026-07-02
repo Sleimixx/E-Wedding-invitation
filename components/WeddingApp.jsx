@@ -19,6 +19,18 @@ export default function WeddingApp({ config, children }) {
   }
 
   useEffect(() => {
+    const audio = audioRef.current;
+    if (!audio) return;
+    audio.volume = config.music.volume ?? 0.5;
+    // Try autoplay immediately on mount (works on desktop/Android)
+    audio.play()
+      .then(() => { startedRef.current = true; setPlaying(true); })
+      .catch(() => {
+        // Browser blocked autoplay (iOS) — fall through to gesture listeners
+      });
+  }, []);
+
+  useEffect(() => {
     function onGesture() {
       const audio = audioRef.current;
       if (!audio || startedRef.current) return;
@@ -27,12 +39,10 @@ export default function WeddingApp({ config, children }) {
       audio.play()
         .then(() => {
           setPlaying(true);
-          // Only remove listeners once play actually succeeds
           document.removeEventListener("touchstart", onGesture);
           document.removeEventListener("click", onGesture);
         })
         .catch(() => {
-          // Reset so next gesture can retry
           startedRef.current = false;
         });
     }
