@@ -12,7 +12,7 @@ export default function Venue() {
         <p className="event-slide-location">Feytroun</p>
         <a
           className="event-slide-btn"
-          href="https://www.google.com/maps/place/Lotus+Venue/@33.9985963,35.7479292,17z"
+          href="https://maps.app.goo.gl/Uvk5NDGvGR2whRyq8"
           target="_blank"
           rel="noopener noreferrer"
         >
