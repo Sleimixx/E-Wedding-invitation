@@ -22,11 +22,13 @@ export default function WeddingApp({ config, children }) {
     const audio = audioRef.current;
     if (!audio) return;
     audio.volume = config.music.volume ?? 0.5;
-    // Try autoplay immediately on mount (works on desktop/Android)
+    // Try unmuted autoplay first (desktop / Android Chrome)
     audio.play()
       .then(() => { startedRef.current = true; setPlaying(true); })
       .catch(() => {
-        // Browser blocked autoplay (iOS) — fall through to gesture listeners
+        // Unmuted autoplay blocked — try muted (iOS allows muted autoplay)
+        audio.muted = true;
+        audio.play().catch(() => { /* both blocked; gesture listener handles it */ });
       });
   }, []);
 
@@ -34,17 +36,27 @@ export default function WeddingApp({ config, children }) {
     function onGesture() {
       const audio = audioRef.current;
       if (!audio || startedRef.current) return;
+
+      // If already playing muted, just unmute — no play() call = no iOS restriction
+      if (audio.muted && !audio.paused) {
+        audio.muted = false;
+        startedRef.current = true;
+        setPlaying(true);
+        document.removeEventListener("touchstart", onGesture);
+        document.removeEventListener("click", onGesture);
+        return;
+      }
+
+      // Audio not playing yet — full play attempt (works on tap/click)
       startedRef.current = true;
-      audio.volume = config.music.volume ?? 0.5;
+      audio.muted = false;
       audio.play()
         .then(() => {
           setPlaying(true);
           document.removeEventListener("touchstart", onGesture);
           document.removeEventListener("click", onGesture);
         })
-        .catch(() => {
-          startedRef.current = false;
-        });
+        .catch(() => { startedRef.current = false; });
     }
     document.addEventListener("touchstart", onGesture, { passive: true });
     document.addEventListener("click", onGesture);

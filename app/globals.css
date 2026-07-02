@@ -122,8 +122,8 @@ button {
   width: 100%;
   height: auto;
   display: block;
-  -webkit-mask-image: radial-gradient(ellipse 72% 72% at 50% 42%, black 25%, rgba(0,0,0,0.5) 50%, transparent 75%);
-  mask-image: radial-gradient(ellipse 72% 72% at 50% 42%, black 25%, rgba(0,0,0,0.5) 50%, transparent 75%);
+  -webkit-mask-image: radial-gradient(ellipse 58% 58% at 50% 40%, black 15%, rgba(0,0,0,0.4) 40%, transparent 68%);
+  mask-image: radial-gradient(ellipse 58% 58% at 50% 40%, black 15%, rgba(0,0,0,0.4) 40%, transparent 68%);
 }
 
 .hero-date {
