@@ -12,26 +12,9 @@ export default function Invitation() {
         <div className="invitation-divider" />
 
         <div className="invitation-parents">
-          <div className="invitation-family">
-            <a
-              className="invitation-family-name"
-              href="https://www.google.com/maps?q=33.9681255,35.6181734&z=17&hl=en"
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              Edgard and Marleine EID
-            </a>
-          </div>
-          <div className="invitation-family">
-            <a
-              className="invitation-family-name"
-              href="https://goo.gl/maps/sTgHckPVpkDuB3JU7"
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              Henri and Josiane EID
-            </a>
-          </div>
+          <span className="invitation-family-name">Edgard &amp; Marleine EID</span>
+          <span className="invitation-parent-sep">·</span>
+          <span className="invitation-family-name">Henri &amp; Josiane EID</span>
         </div>
 
         <p className="invitation-honor">
