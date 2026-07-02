@@ -15,7 +15,7 @@
     "subtitle": "invite you to celebrate their wedding"
   },
   "music": {
-    "src": "/music/background.mp3",
+    "src": "/music/background.mpeg",
     "autoplay": true,
     "loop": true,
     "volume": 0.5
