@@ -12,9 +12,9 @@ export default function Invitation() {
         <div className="invitation-divider" />
 
         <div className="invitation-parents">
-          <span className="invitation-family-name">Edgard &amp; Marleine EID</span>
+          <span className="invitation-family-name">Edgard &amp; Marleine Eid</span>
           <span className="invitation-parent-sep">·</span>
-          <span className="invitation-family-name">Henri &amp; Josiane EID</span>
+          <span className="invitation-family-name">Henri &amp; Josiane Eid</span>
         </div>
 
         <p className="invitation-honor">
