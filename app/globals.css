@@ -122,8 +122,8 @@ button {
   width: 100%;
   height: auto;
   display: block;
-  -webkit-mask-image: radial-gradient(ellipse 58% 58% at 50% 40%, black 15%, rgba(0,0,0,0.4) 40%, transparent 68%);
-  mask-image: radial-gradient(ellipse 58% 58% at 50% 40%, black 15%, rgba(0,0,0,0.4) 40%, transparent 68%);
+  -webkit-mask-image: radial-gradient(ellipse 72% 72% at 50% 42%, black 25%, rgba(0,0,0,0.5) 50%, transparent 75%);
+  mask-image: radial-gradient(ellipse 72% 72% at 50% 42%, black 25%, rgba(0,0,0,0.5) 50%, transparent 75%);
 }
 
 .hero-date {
@@ -216,7 +216,7 @@ button {
 
 /* ── Slide 2: Invitation ── */
 .invitation-slide .slide-overlay {
-  background: rgba(250, 245, 235, 0.88);
+  background: rgba(250, 245, 235, 0.60);
 }
 
 .invitation-inner {
@@ -287,7 +287,7 @@ button {
 
 /* ── Parents Homes slide ── */
 .parents-slide .slide-overlay {
-  background: rgba(20, 10, 5, 0.78);
+  background: rgba(20, 10, 5, 0.52);
 }
 
 .parents-slide {
@@ -370,11 +370,11 @@ button {
 
 /* ── Slides 3 & 4: Ceremony / Venue ── */
 .ceremony-slide .slide-overlay {
-  background: rgba(90, 60, 30, 0.82);
+  background: rgba(90, 60, 30, 0.52);
 }
 
 .venue-slide .slide-overlay {
-  background: rgba(20, 12, 5, 0.85);
+  background: rgba(20, 12, 5, 0.52);
 }
 
 .ceremony-slide,
@@ -449,7 +449,7 @@ button {
 
 /* ── Slide 5: Gift Registry ── */
 .registry-slide .slide-overlay {
-  background: rgba(253, 246, 238, 0.9);
+  background: rgba(253, 246, 238, 0.58);
 }
 
 .registry-slide-inner {
@@ -498,7 +498,7 @@ button {
 
 /* ── Slide 6: RSVP ── */
 .rsvp-slide .slide-overlay {
-  background: rgba(255, 255, 255, 0.92);
+  background: rgba(255, 255, 255, 0.65);
 }
 
 .rsvp-slide-inner {
@@ -622,7 +622,7 @@ button {
 
 /* ── Slide 7: Closing ── */
 .closing-slide .slide-overlay {
-  background: rgba(90, 60, 30, 0.8);
+  background: rgba(90, 60, 30, 0.52);
 }
 
 .closing-slide {
