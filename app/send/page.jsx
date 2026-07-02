@@ -33,7 +33,19 @@ function buildLink(phone, template, name) {
 
 export default function SendPage() {
   const [guests, setGuests] = useState([]);
-  const [template, setTemplate] = useState("");
+  const [template, setTemplate] = useState(
+`Hello {name} 🥂💍
+The countdown is officially on... and we can't say "I do" without YOU! 🤍
+We're beyond excited to invite you to celebrate the biggest party of our lives as we become Mr. & Mrs EID²💕✨
+Click the link below to discover all the wedding details and get ready for a day filled with love, laughter, happy tears, delicious food, and lots of dancing! 💃🕺
+{link}
+Please let us know if you'll be joining the celebration by the 1st of August.
+We seriously can't wait to celebrate, make unforgettable memories, and dance the night away with our favorite people!
+See you on the dance floor! ❤️
+With love,
+Henry & Estelle
+#EID² 💕`
+  );
   const [error, setError] = useState("");
   const [fileName, setFileName] = useState("");
   const fileRef = useRef(null);
@@ -107,7 +119,7 @@ export default function SendPage() {
               rows={6}
               value={template}
               onChange={(e) => setTemplate(e.target.value)}
-              placeholder={`Dear {name},\n\nWe joyfully invite you to celebrate the wedding of Estelle & Henry on August 21, 2026.\n\nKindly RSVP here: {link}`}
+              placeholder=""
             />
           </div>
         </div>
