@@ -1,28 +1,19 @@
 "use client";
-import { useRef, useEffect } from "react";
+import { useRef } from "react";
 
 export default function Hero({ config, onStart }) {
   const { date } = config;
   const sectionRef = useRef(null);
 
-  useEffect(() => {
-    // Lock scrolling so the user must tap the button (click = trusted audio gesture on all browsers)
-    document.documentElement.style.overflow = "hidden";
-    return () => { document.documentElement.style.overflow = ""; };
-  }, []);
-
-  function handleStart() {
-    // Unlock scroll before navigating
-    document.documentElement.style.overflow = "";
+  function handleTap() {
     onStart?.();
-    requestAnimationFrame(() => {
-      const next = sectionRef.current?.nextElementSibling;
-      if (next) next.scrollIntoView({ behavior: "instant" });
-    });
+    const next = sectionRef.current?.nextElementSibling;
+    if (next) next.scrollIntoView({ behavior: "instant" });
   }
 
   return (
-    <section className="hero" ref={sectionRef}>
+    // Entire slide is the tap target — any tap starts music and advances
+    <section className="hero" ref={sectionRef} onClick={handleTap}>
       <div className="slide-bg" />
       <div className="slide-overlay" />
 
@@ -37,10 +28,10 @@ export default function Hero({ config, onStart }) {
         <div className="hero-date">{date.display}</div>
       </div>
 
-      <button className="hero-start-btn" onClick={handleStart}>
+      <div className="hero-start-btn">
         <span className="hero-start-label">Tap to Start</span>
         <span className="hero-start-arrow">↑</span>
-      </button>
+      </div>
     </section>
   );
 }
