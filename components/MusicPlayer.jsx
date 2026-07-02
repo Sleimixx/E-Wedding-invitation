@@ -1,17 +1,6 @@
 "use client";
-import { useEffect, useRef, useState } from "react";
 
-export default function MusicPlayer({ music, audioRef: externalRef }) {
-  const internalRef = useRef(null);
-  const audioRef = externalRef ?? internalRef;
-  const [playing, setPlaying] = useState(false);
-
-  useEffect(() => {
-    const audio = audioRef.current;
-    if (!audio) return;
-    audio.volume = music.volume ?? 0.5;
-  }, [music.volume]);
-
+export default function MusicPlayer({ audioRef, playing, setPlaying }) {
   function toggle() {
     const audio = audioRef.current;
     if (!audio) return;
@@ -23,21 +12,14 @@ export default function MusicPlayer({ music, audioRef: externalRef }) {
     }
   }
 
-  if (!music?.src) return null;
-
   return (
-    <>
-      {!externalRef && (
-        <audio ref={internalRef} src={music.src} loop={music.loop} preload="auto" />
-      )}
-      <button
-        className="music-toggle"
-        onClick={toggle}
-        aria-label={playing ? "Pause music" : "Play music"}
-        title={playing ? "Pause music" : "Play music"}
-      >
-        {playing ? "⏸" : "♫"}
-      </button>
-    </>
+    <button
+      className="music-toggle"
+      onClick={toggle}
+      aria-label={playing ? "Pause music" : "Play music"}
+      title={playing ? "Pause music" : "Play music"}
+    >
+      {playing ? "⏸" : "♫"}
+    </button>
   );
 }

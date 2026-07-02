@@ -5,14 +5,15 @@ import MusicPlayer from "./MusicPlayer";
 
 export default function WeddingApp({ config, children }) {
   const audioRef = useRef(null);
-  const [musicStarted, setMusicStarted] = useState(false);
+  const [playing, setPlaying] = useState(false);
 
   function startMusic() {
     const audio = audioRef.current;
-    if (!audio || musicStarted) return;
+    if (!audio) return;
     audio.volume = config.music.volume ?? 0.5;
-    audio.play().catch(() => {});
-    setMusicStarted(true);
+    audio.play()
+      .then(() => setPlaying(true))
+      .catch(() => {});
   }
 
   return (
@@ -20,12 +21,13 @@ export default function WeddingApp({ config, children }) {
       <audio
         ref={audioRef}
         src={config.music.src}
+        type="audio/mpeg"
         loop={config.music.loop}
         preload="auto"
       />
       <Hero config={config} onStart={startMusic} />
       {children}
-      <MusicPlayer music={config.music} audioRef={audioRef} />
+      <MusicPlayer audioRef={audioRef} playing={playing} setPlaying={setPlaying} />
     </>
   );
 }
