@@ -15,8 +15,8 @@ export default function Hero({ config, onStart }) {
 
   return (
     <section className="hero" ref={sectionRef}>
-      <div className="hero-bg" style={{ backgroundImage: `url(${hero.backgroundImage})` }} />
-      <div className="hero-overlay" />
+      <div className="slide-bg" />
+      <div className="slide-overlay" />
 
       <div className="hero-couple-img-wrap">
         <img src="/images/eid2.jpeg" alt="Henry & Estelle" className="hero-couple-img" />
