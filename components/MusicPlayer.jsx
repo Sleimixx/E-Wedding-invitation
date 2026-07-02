@@ -1,28 +1,16 @@
 "use client";
 import { useEffect, useRef, useState } from "react";
 
-export default function MusicPlayer({ music }) {
-  const audioRef = useRef(null);
+export default function MusicPlayer({ music, audioRef: externalRef }) {
+  const internalRef = useRef(null);
+  const audioRef = externalRef ?? internalRef;
   const [playing, setPlaying] = useState(false);
 
   useEffect(() => {
     const audio = audioRef.current;
     if (!audio) return;
     audio.volume = music.volume ?? 0.5;
-
-    if (music.autoplay) {
-      audio.play().then(() => setPlaying(true)).catch(() => {
-        // Browsers block autoplay without a gesture; wait for one.
-        const onGesture = () => {
-          audio.play().then(() => setPlaying(true)).catch(() => {});
-          window.removeEventListener("click", onGesture);
-          window.removeEventListener("touchstart", onGesture);
-        };
-        window.addEventListener("click", onGesture, { once: true });
-        window.addEventListener("touchstart", onGesture, { once: true });
-      });
-    }
-  }, [music.autoplay, music.volume]);
+  }, [music.volume]);
 
   function toggle() {
     const audio = audioRef.current;
@@ -39,7 +27,9 @@ export default function MusicPlayer({ music }) {
 
   return (
     <>
-      <audio ref={audioRef} src={music.src} loop={music.loop} preload="auto" />
+      {!externalRef && (
+        <audio ref={internalRef} src={music.src} loop={music.loop} preload="auto" />
+      )}
       <button
         className="music-toggle"
         onClick={toggle}
