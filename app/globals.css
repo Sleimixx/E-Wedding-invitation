@@ -4,15 +4,20 @@
   padding: 0;
 }
 
-html,
+html {
+  scroll-snap-type: y mandatory;
+  overflow-y: scroll;
+  height: 100%;
+}
+
 body {
   background: var(--color-bg);
   color: var(--color-text);
   font-family: var(--font-body);
   font-weight: 300;
   line-height: 1.6;
-  scroll-behavior: smooth;
   -webkit-font-smoothing: antialiased;
+  height: 100%;
 }
 
 h1, h2, h3, h4 {
@@ -64,7 +69,6 @@ button {
 /* Hero */
 .hero {
   height: 100vh;
-  min-height: 600px;
   position: relative;
   display: flex;
   flex-direction: column;
@@ -73,6 +77,8 @@ button {
   text-align: center;
   color: white;
   overflow: hidden;
+  scroll-snap-align: start;
+  scroll-snap-stop: always;
 }
 
 .hero-bg {
@@ -192,7 +198,7 @@ button {
 
 /* ── Shared slide base ── */
 .slide {
-  min-height: 100vh;
+  height: 100vh;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -200,6 +206,8 @@ button {
   padding: 4rem 1.5rem;
   position: relative;
   overflow: hidden;
+  scroll-snap-align: start;
+  scroll-snap-stop: always;
 }
 
 .slide-bg {
@@ -208,7 +216,6 @@ button {
   background-image: url('/images/E font invitation _page-0001.jpg');
   background-size: cover;
   background-position: center;
-  background-attachment: fixed;
 }
 
 .slide-overlay {

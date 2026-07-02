@@ -9,7 +9,7 @@ export default function Hero({ config, onStart }) {
     onStart?.();
     const next = sectionRef.current?.nextElementSibling;
     if (next) {
-      next.scrollIntoView({ behavior: "smooth" });
+      next.scrollIntoView({ behavior: "instant" });
     }
   }
 
