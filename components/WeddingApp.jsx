@@ -9,9 +9,8 @@ export default function WeddingApp({ config, children }) {
   const startedRef = useRef(false);
 
   function startMusic() {
-    if (startedRef.current) return;
     const audio = audioRef.current;
-    if (!audio) return;
+    if (!audio || startedRef.current) return;
     startedRef.current = true;
     audio.volume = config.music.volume ?? 0.5;
     audio.play()
@@ -20,12 +19,22 @@ export default function WeddingApp({ config, children }) {
   }
 
   useEffect(() => {
-    // touchstart and click are the only trusted user-gesture events
-    // that iOS Safari allows audio to start from.
     function onGesture() {
-      startMusic();
-      document.removeEventListener("touchstart", onGesture);
-      document.removeEventListener("click", onGesture);
+      const audio = audioRef.current;
+      if (!audio || startedRef.current) return;
+      startedRef.current = true;
+      audio.volume = config.music.volume ?? 0.5;
+      audio.play()
+        .then(() => {
+          setPlaying(true);
+          // Only remove listeners once play actually succeeds
+          document.removeEventListener("touchstart", onGesture);
+          document.removeEventListener("click", onGesture);
+        })
+        .catch(() => {
+          // Reset so next gesture can retry
+          startedRef.current = false;
+        });
     }
     document.addEventListener("touchstart", onGesture, { passive: true });
     document.addEventListener("click", onGesture);

@@ -111,17 +111,20 @@ button {
 
 .hero-couple-img-wrap {
   position: absolute;
-  top: 2rem;
+  top: clamp(3rem, 9vh, 5.5rem);
   left: 50%;
   transform: translateX(-50%);
   z-index: 2;
-  width: clamp(110px, 32vw, 200px);
+  width: clamp(120px, 38vw, 220px);
 }
 
 .hero-couple-img {
   width: 100%;
   height: auto;
   display: block;
+  /* Fade edges to blend image into the slide background */
+  -webkit-mask-image: radial-gradient(ellipse 88% 88% at 50% 45%, black 45%, rgba(0,0,0,0.6) 65%, transparent 100%);
+  mask-image: radial-gradient(ellipse 88% 88% at 50% 45%, black 45%, rgba(0,0,0,0.6) 65%, transparent 100%);
 }
 
 .hero-date {
