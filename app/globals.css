@@ -285,6 +285,89 @@ button {
   color: var(--color-primary);
 }
 
+/* ── Parents Homes slide ── */
+.parents-slide .slide-overlay {
+  background: rgba(20, 10, 5, 0.78);
+}
+
+.parents-slide {
+  color: white;
+}
+
+.parents-inner {
+  max-width: 620px;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1.5rem;
+}
+
+.parents-title {
+  font-family: var(--font-script);
+  font-size: clamp(2rem, 5vw, 3rem);
+  color: var(--color-accent);
+  font-weight: 400;
+}
+
+.parents-divider {
+  width: 50px;
+  height: 1px;
+  background: rgba(255,255,255,0.35);
+}
+
+.parents-grid {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 2rem;
+  flex-wrap: wrap;
+  width: 100%;
+}
+
+.parents-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1rem;
+}
+
+.parents-card-divider {
+  width: 1px;
+  height: 80px;
+  background: rgba(255,255,255,0.25);
+}
+
+@media (max-width: 500px) {
+  .parents-card-divider { width: 50px; height: 1px; }
+  .parents-grid { flex-direction: column; }
+}
+
+.parents-card-names {
+  font-family: var(--font-heading);
+  font-size: 1.1rem;
+  letter-spacing: 0.05em;
+  opacity: 0.95;
+}
+
+.parents-map-btn {
+  display: inline-block;
+  padding: 0.65rem 1.5rem;
+  border: 1px solid rgba(255,255,255,0.6);
+  border-radius: 999px;
+  color: white;
+  font-size: 0.85rem;
+  letter-spacing: 0.12em;
+  text-decoration: none;
+  transition: background 0.2s;
+}
+
+.parents-map-btn:hover {
+  background: rgba(255,255,255,0.15);
+  opacity: 1;
+  color: white;
+}
+
 /* ── Slides 3 & 4: Ceremony / Venue ── */
 .ceremony-slide .slide-overlay {
   background: rgba(90, 60, 30, 0.82);

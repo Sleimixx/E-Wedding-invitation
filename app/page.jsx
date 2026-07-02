@@ -2,6 +2,7 @@ import { Suspense } from "react";
 import config from "@/config/wedding.json";
 import WeddingApp from "@/components/WeddingApp";
 import Invitation from "@/components/Invitation";
+import ParentsHomes from "@/components/ParentsHomes";
 import Ceremony from "@/components/Ceremony";
 import Venue from "@/components/Venue";
 import GiftRegistry from "@/components/GiftRegistry";
@@ -13,6 +14,7 @@ export default function Home() {
     <main>
       <WeddingApp config={config}>
         <Invitation />
+        <ParentsHomes />
         <Ceremony />
         <Venue />
         <GiftRegistry />
