@@ -136,14 +136,17 @@ button {
 }
 
 .hero-couple-img-wrap {
-  width: clamp(100px, 28vw, 180px);
-  height: clamp(100px, 28vw, 180px);
+  position: absolute;
+  top: 2rem;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 2;
+  width: clamp(90px, 24vw, 150px);
+  height: clamp(90px, 24vw, 150px);
   border-radius: 50%;
   overflow: hidden;
   border: 3px solid rgba(255,255,255,0.6);
   box-shadow: 0 4px 24px rgba(0,0,0,0.35);
-  margin: 0.5rem 0;
-  flex-shrink: 0;
 }
 
 .hero-couple-img {

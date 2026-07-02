@@ -18,11 +18,12 @@ export default function Hero({ config, onStart }) {
       <div className="hero-bg" style={{ backgroundImage: `url(${hero.backgroundImage})` }} />
       <div className="hero-overlay" />
 
+      <div className="hero-couple-img-wrap">
+        <img src="/images/eid2.jpeg" alt="Henry & Estelle" className="hero-couple-img" />
+      </div>
+
       <div className="hero-content">
         <span className="hero-first-name">Henry</span>
-        <div className="hero-couple-img-wrap">
-          <img src="/images/eid2.jpeg" alt="Henry & Estelle" className="hero-couple-img" />
-        </div>
         <span className="hero-and">&amp;</span>
         <span className="hero-first-name">Estelle</span>
         <div className="hero-date">{date.display}</div>
