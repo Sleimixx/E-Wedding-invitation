@@ -1,16 +1,24 @@
 "use client";
-import { useRef } from "react";
+import { useRef, useEffect } from "react";
 
 export default function Hero({ config, onStart }) {
-  const { date, hero } = config;
+  const { date } = config;
   const sectionRef = useRef(null);
 
+  useEffect(() => {
+    // Lock scrolling so the user must tap the button (click = trusted audio gesture on all browsers)
+    document.documentElement.style.overflow = "hidden";
+    return () => { document.documentElement.style.overflow = ""; };
+  }, []);
+
   function handleStart() {
+    // Unlock scroll before navigating
+    document.documentElement.style.overflow = "";
     onStart?.();
-    const next = sectionRef.current?.nextElementSibling;
-    if (next) {
-      next.scrollIntoView({ behavior: "instant" });
-    }
+    requestAnimationFrame(() => {
+      const next = sectionRef.current?.nextElementSibling;
+      if (next) next.scrollIntoView({ behavior: "instant" });
+    });
   }
 
   return (
@@ -30,7 +38,7 @@ export default function Hero({ config, onStart }) {
       </div>
 
       <button className="hero-start-btn" onClick={handleStart}>
-        <span className="hero-start-label">Swipe to Start</span>
+        <span className="hero-start-label">Tap to Start</span>
         <span className="hero-start-arrow">↑</span>
       </button>
     </section>

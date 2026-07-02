@@ -29,7 +29,7 @@ export default function WeddingApp({ config, children }) {
   }, []);
 
   useEffect(() => {
-    function onGesture() {
+    function onClick() {
       const audio = audioRef.current;
       if (!audio || startedRef.current) return;
       startedRef.current = true;
@@ -37,19 +37,12 @@ export default function WeddingApp({ config, children }) {
       audio.play()
         .then(() => {
           setPlaying(true);
-          // touchend covers both swipes and taps on iOS
-          document.removeEventListener("touchend", onGesture);
-          document.removeEventListener("click", onGesture);
+          document.removeEventListener("click", onClick);
         })
         .catch(() => { startedRef.current = false; });
     }
-    // iOS trusted gesture list includes touchend (not touchstart) — swipes fire touchend
-    document.addEventListener("touchend", onGesture);
-    document.addEventListener("click", onGesture);
-    return () => {
-      document.removeEventListener("touchend", onGesture);
-      document.removeEventListener("click", onGesture);
-    };
+    document.addEventListener("click", onClick);
+    return () => { document.removeEventListener("click", onClick); };
   }, []);
 
   return (
