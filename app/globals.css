@@ -533,6 +533,170 @@ button {
 }
 
 /* ── Countdown (kept for future use) ── */
+
+/* ── Send / WhatsApp tool ── */
+.send-page {
+  min-height: 100vh;
+  background: #faf8f5;
+  padding: 3rem 1.5rem 5rem;
+}
+
+.send-inner {
+  max-width: 640px;
+  margin: 0 auto;
+}
+
+.send-title {
+  font-family: var(--font-heading);
+  font-size: 2rem;
+  color: var(--color-primary);
+  margin-bottom: 0.5rem;
+}
+
+.send-sub {
+  color: var(--color-text);
+  opacity: 0.7;
+  margin-bottom: 2.5rem;
+}
+
+.send-step {
+  display: flex;
+  gap: 1.25rem;
+  margin-bottom: 2.5rem;
+}
+
+.send-step-num {
+  width: 2rem;
+  height: 2rem;
+  min-width: 2rem;
+  border-radius: 50%;
+  background: var(--color-primary);
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 700;
+  font-size: 0.9rem;
+  margin-top: 0.1rem;
+}
+
+.send-step-body {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+}
+
+.send-step-label {
+  font-weight: 600;
+  font-size: 1rem;
+  color: var(--color-text);
+}
+
+.send-step-hint {
+  font-size: 0.88rem;
+  color: var(--color-text);
+  opacity: 0.65;
+}
+
+.send-step-hint code {
+  background: rgba(0,0,0,0.07);
+  padding: 1px 5px;
+  border-radius: 3px;
+  font-family: monospace;
+}
+
+.send-upload-btn {
+  align-self: flex-start;
+  padding: 0.7rem 1.5rem;
+  background: var(--color-primary);
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-size: 0.9rem;
+  letter-spacing: 0.05em;
+  transition: opacity 0.2s;
+}
+
+.send-upload-btn:hover { opacity: 0.85; }
+
+.send-error { color: #8b2020; font-size: 0.88rem; }
+.send-success { color: #2d6a2d; font-size: 0.88rem; }
+
+.send-textarea {
+  width: 100%;
+  padding: 0.9rem 1rem;
+  border: 1px solid rgba(0,0,0,0.15);
+  border-radius: 8px;
+  font-family: inherit;
+  font-size: 0.95rem;
+  line-height: 1.6;
+  resize: vertical;
+  background: white;
+  color: var(--color-text);
+}
+
+.send-textarea:focus {
+  outline: none;
+  border-color: var(--color-primary);
+}
+
+.send-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+}
+
+.send-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  background: white;
+  border: 1px solid rgba(0,0,0,0.08);
+  border-radius: 10px;
+  padding: 0.85rem 1rem;
+}
+
+.send-guest-info {
+  display: flex;
+  flex-direction: column;
+  gap: 0.15rem;
+}
+
+.send-guest-name {
+  font-weight: 500;
+  font-size: 0.95rem;
+  color: var(--color-text);
+}
+
+.send-guest-phone {
+  font-size: 0.8rem;
+  color: var(--color-text);
+  opacity: 0.5;
+}
+
+.send-wa-btn {
+  padding: 0.55rem 1.2rem;
+  background: #25D366;
+  color: white;
+  border-radius: 999px;
+  font-size: 0.85rem;
+  font-weight: 600;
+  text-decoration: none;
+  white-space: nowrap;
+  transition: opacity 0.2s;
+}
+
+.send-wa-btn:hover { opacity: 0.85; color: white; }
+
+.send-total {
+  font-size: 0.85rem;
+  color: var(--color-text);
+  opacity: 0.55;
+  text-align: right;
+  margin-top: 0.5rem;
+}
 .countdown {
   display: flex;
   justify-content: center;

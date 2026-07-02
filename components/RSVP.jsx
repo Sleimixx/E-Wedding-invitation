@@ -1,12 +1,25 @@
 "use client";
-import { useState } from "react";
+import { useState, useEffect, useRef } from "react";
+import { useSearchParams } from "next/navigation";
 
 export default function RSVP() {
+  const searchParams = useSearchParams();
   const [name, setName] = useState("");
   const [attending, setAttending] = useState(null);
   const [persons, setPersons] = useState(1);
   const [status, setStatus] = useState(null);
   const [submitting, setSubmitting] = useState(false);
+  const sectionRef = useRef(null);
+
+  useEffect(() => {
+    const guestName = searchParams.get("name");
+    if (guestName) {
+      setName(guestName);
+      setTimeout(() => {
+        sectionRef.current?.scrollIntoView({ behavior: "smooth" });
+      }, 800);
+    }
+  }, [searchParams]);
 
   async function onSubmit(e) {
     e.preventDefault();
@@ -41,7 +54,7 @@ export default function RSVP() {
   }
 
   return (
-    <section className="slide rsvp-slide" id="rsvp">
+    <section className="slide rsvp-slide" id="rsvp" ref={sectionRef}>
       <div className="rsvp-slide-inner">
         <h2 className="rsvp-slide-title">Reservation</h2>
 

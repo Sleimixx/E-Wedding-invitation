@@ -1,3 +1,4 @@
+import { Suspense } from "react";
 import config from "@/config/wedding.json";
 import WeddingApp from "@/components/WeddingApp";
 import Invitation from "@/components/Invitation";
@@ -15,7 +16,9 @@ export default function Home() {
         <Ceremony />
         <Venue />
         <GiftRegistry />
-        <RSVP />
+        <Suspense fallback={null}>
+          <RSVP />
+        </Suspense>
         <Closing />
       </WeddingApp>
     </main>
