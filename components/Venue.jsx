@@ -1,6 +1,8 @@
 export default function Venue() {
   return (
     <section className="slide venue-slide" id="venue">
+      <div className="slide-bg" />
+      <div className="slide-overlay" />
       <div className="event-slide-inner">
         <div className="event-slide-icon">🥂</div>
         <h2 className="event-slide-title">Reception</h2>

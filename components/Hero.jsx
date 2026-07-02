@@ -23,9 +23,9 @@ export default function Hero({ config, onStart }) {
 
       <div className="hero-content">
         <h1 className="hero-names">
-          <span className="hero-first-name">Estelle</span>
-          <span className="hero-and">&amp;</span>
           <span className="hero-first-name">Henry</span>
+          <span className="hero-and">&amp;</span>
+          <span className="hero-first-name">Estelle</span>
         </h1>
         <div className="hero-date">{date.display}</div>
       </div>

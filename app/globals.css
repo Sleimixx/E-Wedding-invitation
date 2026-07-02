@@ -189,11 +189,33 @@ button {
   justify-content: center;
   text-align: center;
   padding: 4rem 1.5rem;
+  position: relative;
+  overflow: hidden;
+}
+
+.slide-bg {
+  position: absolute;
+  inset: 0;
+  background-image: url('/images/eid2.jpeg');
+  background-size: cover;
+  background-position: center;
+  background-attachment: fixed;
+}
+
+.slide-overlay {
+  position: absolute;
+  inset: 0;
+}
+
+/* each slide's inner content sits above the bg */
+.slide > *:not(.slide-bg):not(.slide-overlay) {
+  position: relative;
+  z-index: 1;
 }
 
 /* ── Slide 2: Invitation ── */
-.invitation-slide {
-  background: var(--color-bg);
+.invitation-slide .slide-overlay {
+  background: rgba(250, 245, 235, 0.88);
 }
 
 .invitation-inner {
@@ -227,8 +249,10 @@ button {
 
 .invitation-parents {
   display: flex;
-  flex-direction: column;
-  gap: 0.6rem;
+  flex-direction: row;
+  gap: 2.5rem;
+  justify-content: center;
+  flex-wrap: wrap;
 }
 
 .invitation-family-name {
@@ -262,13 +286,16 @@ button {
 }
 
 /* ── Slides 3 & 4: Ceremony / Venue ── */
-.ceremony-slide {
-  background: var(--color-primary);
-  color: white;
+.ceremony-slide .slide-overlay {
+  background: rgba(90, 60, 30, 0.82);
 }
 
+.venue-slide .slide-overlay {
+  background: rgba(20, 12, 5, 0.85);
+}
+
+.ceremony-slide,
 .venue-slide {
-  background: #2a1f14;
   color: white;
 }
 
@@ -339,8 +366,8 @@ button {
 }
 
 /* ── Slide 5: Gift Registry ── */
-.registry-slide {
-  background: #fdf6ee;
+.registry-slide .slide-overlay {
+  background: rgba(253, 246, 238, 0.9);
 }
 
 .registry-slide-inner {
@@ -388,8 +415,8 @@ button {
 }
 
 /* ── Slide 6: RSVP ── */
-.rsvp-slide {
-  background: white;
+.rsvp-slide .slide-overlay {
+  background: rgba(255, 255, 255, 0.92);
 }
 
 .rsvp-slide-inner {
@@ -433,10 +460,24 @@ button {
   border-color: var(--color-primary);
 }
 
-.rsvp-slide-persons,
-.rsvp-slide-attend {
+.rsvp-slide-row {
   display: flex;
   gap: 0.75rem;
+  align-items: stretch;
+}
+
+.rsvp-slide-attend {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  flex: 1;
+}
+
+.rsvp-slide-persons {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  width: 120px;
 }
 
 .rsvp-persons-btn,
@@ -499,8 +540,11 @@ button {
 .rsvp-slide-status.err { background: #fdeaea; color: #8b2020; }
 
 /* ── Slide 7: Closing ── */
+.closing-slide .slide-overlay {
+  background: rgba(90, 60, 30, 0.8);
+}
+
 .closing-slide {
-  background: var(--color-primary);
   color: white;
 }
 

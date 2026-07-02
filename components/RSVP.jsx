@@ -55,6 +55,8 @@ export default function RSVP() {
 
   return (
     <section className="slide rsvp-slide" id="rsvp" ref={sectionRef}>
+      <div className="slide-bg" />
+      <div className="slide-overlay" />
       <div className="rsvp-slide-inner">
         <h2 className="rsvp-slide-title">Reservation</h2>
 
@@ -68,38 +70,40 @@ export default function RSVP() {
             required
           />
 
-          <div className="rsvp-slide-persons">
-            <button
-              type="button"
-              className={`rsvp-persons-btn${persons === 1 ? " active" : ""}`}
-              onClick={() => setPersons(1)}
-            >
-              1 Person
-            </button>
-            <button
-              type="button"
-              className={`rsvp-persons-btn${persons === 2 ? " active" : ""}`}
-              onClick={() => setPersons(2)}
-            >
-              2 Persons
-            </button>
-          </div>
+          <div className="rsvp-slide-row">
+            <div className="rsvp-slide-attend">
+              <button
+                type="button"
+                className={`rsvp-attend-btn accept${attending === true ? " active" : ""}`}
+                onClick={() => setAttending(true)}
+              >
+                Attending ✓
+              </button>
+              <button
+                type="button"
+                className={`rsvp-attend-btn decline${attending === false ? " active" : ""}`}
+                onClick={() => setAttending(false)}
+              >
+                Not Attending ✗
+              </button>
+            </div>
 
-          <div className="rsvp-slide-attend">
-            <button
-              type="button"
-              className={`rsvp-attend-btn accept${attending === true ? " active" : ""}`}
-              onClick={() => setAttending(true)}
-            >
-              Attending ✓
-            </button>
-            <button
-              type="button"
-              className={`rsvp-attend-btn decline${attending === false ? " active" : ""}`}
-              onClick={() => setAttending(false)}
-            >
-              Not Attending ✗
-            </button>
+            <div className="rsvp-slide-persons">
+              <button
+                type="button"
+                className={`rsvp-persons-btn${persons === 1 ? " active" : ""}`}
+                onClick={() => setPersons(1)}
+              >
+                1 Person
+              </button>
+              <button
+                type="button"
+                className={`rsvp-persons-btn${persons === 2 ? " active" : ""}`}
+                onClick={() => setPersons(2)}
+              >
+                2 Persons
+              </button>
+            </div>
           </div>
 
           <button className="rsvp-slide-submit" type="submit" disabled={submitting}>

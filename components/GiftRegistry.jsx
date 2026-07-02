@@ -1,6 +1,8 @@
 export default function GiftRegistry() {
   return (
     <section className="slide registry-slide" id="registry">
+      <div className="slide-bg" />
+      <div className="slide-overlay" />
       <div className="registry-slide-inner">
         <p className="registry-slide-msg">
           Having you share this day with us

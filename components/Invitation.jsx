@@ -1,6 +1,8 @@
 export default function Invitation() {
   return (
     <section className="slide invitation-slide" id="invitation">
+      <div className="slide-bg" />
+      <div className="slide-overlay" />
       <div className="invitation-inner">
         <p className="invitation-quote">
           "I will be with you till the end of time."
@@ -36,7 +38,7 @@ export default function Invitation() {
           Are honored to invite you to the wedding of
         </p>
 
-        <p className="invitation-couple">Estelle &amp; Henry</p>
+        <p className="invitation-couple">Henry &amp; Estelle</p>
       </div>
     </section>
   );

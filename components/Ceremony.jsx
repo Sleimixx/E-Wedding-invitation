@@ -1,6 +1,8 @@
 export default function Ceremony() {
   return (
     <section className="slide ceremony-slide" id="ceremony">
+      <div className="slide-bg" />
+      <div className="slide-overlay" />
       <div className="event-slide-inner">
         <div className="event-slide-icon">✝</div>
         <h2 className="event-slide-title">Wedding Ceremony</h2>
