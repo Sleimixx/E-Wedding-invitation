@@ -42,7 +42,7 @@ function parseCSV(text) {
   });
 }
 
-const SITE_URL = "https://henry-estelle-wedding-invitation.vercel.app";
+const SITE_URL = "https://e-wedding-invitation-beta.vercel.app";
 
 function buildMessage(template, name, attendees) {
   const personalizedUrl = `${SITE_URL}?name=${encodeURIComponent(name)}&guests=${attendees}`;
