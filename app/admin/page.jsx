@@ -6,6 +6,7 @@ export default function AdminPage() {
   const [data, setData] = useState(null);
   const [error, setError] = useState(null);
   const [loading, setLoading] = useState(false);
+  const [clearing, setClearing] = useState(false);
 
   async function load(e) {
     e?.preventDefault();
@@ -27,6 +28,21 @@ export default function AdminPage() {
   function downloadCsv() {
     const url = `/api/rsvps?format=csv&key=${encodeURIComponent(key)}`;
     window.open(url, "_blank");
+  }
+
+  async function clearAll() {
+    if (!confirm("Delete ALL RSVPs? This cannot be undone.")) return;
+    setClearing(true);
+    try {
+      const res = await fetch(`/api/rsvps?key=${encodeURIComponent(key)}`, { method: "DELETE" });
+      const body = await res.json();
+      if (!res.ok) throw new Error(body.error || "Failed");
+      setData(null);
+    } catch (err) {
+      setError(err.message);
+    } finally {
+      setClearing(false);
+    }
   }
 
   return (
@@ -66,22 +82,41 @@ export default function AdminPage() {
           {loading ? "Loading..." : "Load"}
         </button>
         {data && (
-          <button
-            type="button"
-            onClick={downloadCsv}
-            style={{
-              padding: "0.75rem 1.5rem",
-              background: "var(--color-accent)",
-              color: "white",
-              border: "none",
-              borderRadius: 4,
-              fontSize: "0.9rem",
-              letterSpacing: "0.1em",
-              textTransform: "uppercase",
-            }}
-          >
-            Export CSV
-          </button>
+          <>
+            <button
+              type="button"
+              onClick={downloadCsv}
+              style={{
+                padding: "0.75rem 1.5rem",
+                background: "var(--color-accent)",
+                color: "white",
+                border: "none",
+                borderRadius: 4,
+                fontSize: "0.9rem",
+                letterSpacing: "0.1em",
+                textTransform: "uppercase",
+              }}
+            >
+              Export CSV
+            </button>
+            <button
+              type="button"
+              onClick={clearAll}
+              disabled={clearing}
+              style={{
+                padding: "0.75rem 1.5rem",
+                background: "#c0392b",
+                color: "white",
+                border: "none",
+                borderRadius: 4,
+                fontSize: "0.9rem",
+                letterSpacing: "0.1em",
+                textTransform: "uppercase",
+              }}
+            >
+              {clearing ? "Clearing…" : "Clear all"}
+            </button>
+          </>
         )}
       </form>
 

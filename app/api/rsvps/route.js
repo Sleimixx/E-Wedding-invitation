@@ -69,3 +69,17 @@ export async function GET(request) {
     );
   }
 }
+
+export async function DELETE(request) {
+  const auth = checkKey(request);
+  if (!auth.ok) return NextResponse.json({ error: auth.msg }, { status: 401 });
+
+  try {
+    await ensureTable();
+    await sql`DELETE FROM rsvps`;
+    return NextResponse.json({ ok: true });
+  } catch (err) {
+    console.error("Clear RSVPs error:", err);
+    return NextResponse.json({ error: "Failed to clear RSVPs." }, { status: 500 });
+  }
+}
