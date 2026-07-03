@@ -7,17 +7,24 @@ export default function RSVP() {
   const [name, setName] = useState("");
   const [attending, setAttending] = useState(null);
   const [persons, setPersons] = useState(1);
+  const [allocatedGuests, setAllocatedGuests] = useState(2);
   const [status, setStatus] = useState(null);
   const [submitting, setSubmitting] = useState(false);
   const sectionRef = useRef(null);
 
   useEffect(() => {
     const guestName = searchParams.get("name");
+    const guestsParam = searchParams.get("guests");
     if (guestName) {
       setName(guestName);
       setTimeout(() => {
         sectionRef.current?.scrollIntoView({ behavior: "smooth" });
       }, 800);
+    }
+    if (guestsParam) {
+      const count = Math.max(1, parseInt(guestsParam, 10) || 1);
+      setAllocatedGuests(count);
+      setPersons(count);
     }
   }, [searchParams]);
 
@@ -89,20 +96,16 @@ export default function RSVP() {
             </div>
 
             <div className="rsvp-slide-persons">
-              <button
-                type="button"
-                className={`rsvp-persons-btn${persons === 1 ? " active" : ""}`}
-                onClick={() => setPersons(1)}
-              >
-                1 Person
-              </button>
-              <button
-                type="button"
-                className={`rsvp-persons-btn${persons === 2 ? " active" : ""}`}
-                onClick={() => setPersons(2)}
-              >
-                2 Persons
-              </button>
+              {Array.from({ length: allocatedGuests }, (_, i) => i + 1).map((n) => (
+                <button
+                  key={n}
+                  type="button"
+                  className={`rsvp-persons-btn${persons === n ? " active" : ""}`}
+                  onClick={() => setPersons(n)}
+                >
+                  {n} {n === 1 ? "Person" : "Persons"}
+                </button>
+              ))}
             </div>
           </div>
 

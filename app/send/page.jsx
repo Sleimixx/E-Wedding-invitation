@@ -1,43 +1,68 @@
 "use client";
 import { useState, useRef } from "react";
+import * as XLSX from "xlsx";
+
+function parseExcel(buffer) {
+  const wb = XLSX.read(buffer, { type: "array" });
+  const ws = wb.Sheets[wb.SheetNames[0]];
+  const rows = XLSX.utils.sheet_to_json(ws, { header: 1 });
+  if (rows.length < 2) throw new Error("File is empty.");
+
+  const headers = rows[0].map((h) => String(h).trim().toLowerCase());
+  const nameIdx = headers.findIndex((h) => h.includes("name"));
+  const phoneIdx = headers.findIndex((h) => h.includes("phone") || h.includes("number") || h.includes("tel"));
+  const attendeesIdx = headers.findIndex((h) => h.includes("attend") || h.includes("guest") || h.includes("person"));
+
+  if (nameIdx === -1) throw new Error("Missing 'Name' column.");
+  if (phoneIdx === -1) throw new Error("Missing 'Phone number' column.");
+
+  return rows.slice(1).filter((r) => r[nameIdx]).map((r) => ({
+    name: String(r[nameIdx] ?? "").trim(),
+    phone: String(r[phoneIdx] ?? "").trim().replace(/[\s\-().+]/g, ""),
+    attendees: attendeesIdx !== -1 ? Number(r[attendeesIdx]) || 1 : 1,
+  }));
+}
 
 function parseCSV(text) {
   const lines = text.trim().split(/\r?\n/);
   const headers = lines[0].split(",").map((h) => h.trim().toLowerCase());
   const nameIdx = headers.findIndex((h) => h.includes("name"));
   const phoneIdx = headers.findIndex((h) => h.includes("phone") || h.includes("number") || h.includes("tel"));
+  const attendeesIdx = headers.findIndex((h) => h.includes("attend") || h.includes("guest") || h.includes("person"));
 
-  if (nameIdx === -1 || phoneIdx === -1) {
-    throw new Error("CSV must have a 'name' column and a 'phone' column.");
-  }
+  if (nameIdx === -1 || phoneIdx === -1) throw new Error("CSV must have a 'name' and a 'phone' column.");
 
   return lines.slice(1).filter(Boolean).map((line) => {
     const cols = line.split(",").map((c) => c.trim().replace(/^"|"$/g, ""));
-    return { name: cols[nameIdx], phone: sanitizePhone(cols[phoneIdx]) };
+    return {
+      name: cols[nameIdx],
+      phone: cols[phoneIdx].replace(/[\s\-().+]/g, ""),
+      attendees: attendeesIdx !== -1 ? Number(cols[attendeesIdx]) || 1 : 1,
+    };
   });
-}
-
-function sanitizePhone(raw) {
-  return raw.replace(/[\s\-().]/g, "");
 }
 
 const SITE_URL = "https://e-wedding-invitation-beta.vercel.app";
 
-function buildLink(phone, template, name) {
-  const personalizedUrl = `${SITE_URL}?name=${encodeURIComponent(name)}`;
+function buildLink(phone, countryCode, template, name, attendees) {
+  const clean = countryCode.replace(/\D/g, "") + phone.replace(/\D/g, "");
+  const personalizedUrl = `${SITE_URL}?name=${encodeURIComponent(name)}&guests=${attendees}`;
   const msg = template
     .replace(/\{name\}/gi, name)
+    .replace(/\{attendees\}/gi, String(attendees))
     .replace(/\{link\}/gi, personalizedUrl);
-  return `https://wa.me/${phone.replace("+", "")}?text=${encodeURIComponent(msg)}`;
+  return `https://wa.me/${clean}?text=${encodeURIComponent(msg)}`;
 }
 
 export default function SendPage() {
   const [guests, setGuests] = useState([]);
+  const [countryCode, setCountryCode] = useState("961");
   const [template, setTemplate] = useState(
 `Hello {name} 🥂💍
 The countdown is officially on... and we can't say "I do" without YOU! 🤍
 We're beyond excited to invite you to celebrate the biggest party of our lives as we become Mr. & Mrs EID²💕✨
-Click the link below to discover all the wedding details and get ready for a day filled with love, laughter, happy tears, delicious food, and lots of dancing! 💃🕺
+We're reserving {attendees} spot(s) just for you!
+Click the link below to discover all the wedding details and confirm your attendance 💃🕺
 {link}
 Please let us know if you'll be joining the celebration by the 1st of August.
 We seriously can't wait to celebrate, make unforgettable memories, and dance the night away with our favorite people!
@@ -54,51 +79,65 @@ Henry & Estelle
     const file = e.target.files[0];
     if (!file) return;
     setFileName(file.name);
-    const reader = new FileReader();
-    reader.onload = (ev) => {
-      try {
-        const parsed = parseCSV(ev.target.result);
-        setGuests(parsed);
-        setError("");
-      } catch (err) {
-        setError(err.message);
-        setGuests([]);
-      }
-    };
-    reader.readAsText(file);
+    setError("");
+    setGuests([]);
+
+    const isExcel = /\.(xlsx|xls)$/i.test(file.name);
+
+    if (isExcel) {
+      const reader = new FileReader();
+      reader.onload = (ev) => {
+        try {
+          setGuests(parseExcel(new Uint8Array(ev.target.result)));
+        } catch (err) {
+          setError(err.message);
+        }
+      };
+      reader.readAsArrayBuffer(file);
+    } else {
+      const reader = new FileReader();
+      reader.onload = (ev) => {
+        try {
+          setGuests(parseCSV(ev.target.result));
+        } catch (err) {
+          setError(err.message);
+        }
+      };
+      reader.readAsText(file);
+    }
   }
 
   const links = template && guests.length
-    ? guests.map((g) => ({ ...g, url: buildLink(g.phone, template, g.name) }))
+    ? guests.map((g) => ({ ...g, url: buildLink(g.phone, countryCode, template, g.name, g.attendees) }))
     : [];
 
   return (
     <main className="send-page">
       <div className="send-inner">
         <h1 className="send-title">WhatsApp Invite Sender</h1>
-        <p className="send-sub">
-          Upload your guest CSV, write your message, then tap each link to send.
-        </p>
+        <p className="send-sub">Upload your guest list, write your message, then tap each link to send.</p>
 
-        {/* Step 1: CSV */}
+        {/* Step 1: File */}
         <div className="send-step">
           <div className="send-step-num">1</div>
           <div className="send-step-body">
-            <p className="send-step-label">Upload guest list CSV</p>
+            <p className="send-step-label">Upload guest list</p>
             <p className="send-step-hint">
-              CSV must have a <strong>name</strong> column and a <strong>phone</strong> column.
-              Phone numbers should include country code (e.g. +96170123456).
+              Supports <strong>.xlsx</strong> and <strong>.csv</strong>. Columns needed:{" "}
+              <strong>Name</strong>, <strong>Phone number</strong>, <strong>Number of attendees</strong>.
             </p>
-            <button className="send-upload-btn" onClick={() => fileRef.current?.click()}>
-              {fileName ? `✓ ${fileName}` : "Choose CSV file"}
-            </button>
-            <input
-              ref={fileRef}
-              type="file"
-              accept=".csv,text/csv"
-              onChange={handleFile}
-              style={{ display: "none" }}
-            />
+            <div className="send-file-row">
+              <button className="send-upload-btn" onClick={() => fileRef.current?.click()}>
+                {fileName ? `✓ ${fileName}` : "Choose file (.xlsx / .csv)"}
+              </button>
+              <input
+                ref={fileRef}
+                type="file"
+                accept=".xlsx,.xls,.csv,text/csv"
+                onChange={handleFile}
+                style={{ display: "none" }}
+              />
+            </div>
             {error && <p className="send-error">{error}</p>}
             {guests.length > 0 && (
               <p className="send-success">✓ {guests.length} guests loaded</p>
@@ -106,46 +145,62 @@ Henry & Estelle
           </div>
         </div>
 
-        {/* Step 2: Template */}
+        {/* Step 2: Country code */}
         <div className="send-step">
           <div className="send-step-num">2</div>
           <div className="send-step-body">
-            <p className="send-step-label">Write your message</p>
+            <p className="send-step-label">Country code</p>
             <p className="send-step-hint">
-              Use <code>{"{name}"}</code> for the guest&apos;s name and <code>{"{link}"}</code> for their personalized RSVP link (auto-fills their name on the reservation page).
+              Digits only — prepended to every phone number in the file (e.g. <strong>961</strong> for Lebanon).
+            </p>
+            <div className="send-country-row">
+              <span className="send-country-plus">+</span>
+              <input
+                className="send-country-input"
+                type="text"
+                value={countryCode}
+                onChange={(e) => setCountryCode(e.target.value.replace(/\D/g, ""))}
+                maxLength={4}
+                placeholder="961"
+              />
+            </div>
+          </div>
+        </div>
+
+        {/* Step 3: Template */}
+        <div className="send-step">
+          <div className="send-step-num">3</div>
+          <div className="send-step-body">
+            <p className="send-step-label">Message template</p>
+            <p className="send-step-hint">
+              <code>{"{name}"}</code> → guest name &nbsp;·&nbsp;
+              <code>{"{attendees}"}</code> → number of spots &nbsp;·&nbsp;
+              <code>{"{link}"}</code> → personalized RSVP link
             </p>
             <textarea
               className="send-textarea"
-              rows={6}
+              rows={10}
               value={template}
               onChange={(e) => setTemplate(e.target.value)}
-              placeholder=""
             />
           </div>
         </div>
 
-        {/* Step 3: Links */}
+        {/* Step 4: Send */}
         {links.length > 0 && (
           <div className="send-step">
-            <div className="send-step-num">3</div>
+            <div className="send-step-num">4</div>
             <div className="send-step-body">
               <p className="send-step-label">Send messages</p>
-              <p className="send-step-hint">
-                Tap each button — WhatsApp opens with the message ready to send.
-              </p>
+              <p className="send-step-hint">Tap a button — WhatsApp opens with the message pre-filled.</p>
               <div className="send-list">
                 {links.map((g, i) => (
                   <div key={i} className="send-row">
                     <div className="send-guest-info">
                       <span className="send-guest-name">{g.name}</span>
-                      <span className="send-guest-phone">{g.phone}</span>
+                      <span className="send-guest-phone">+{countryCode} {g.phone} · {g.attendees} pax</span>
                     </div>
-                    <a
-                      className="send-wa-btn"
-                      href={g.url}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                    >
+                    <a className="send-wa-btn" href={g.url} target="_blank" rel="noopener noreferrer">
                       Send ↗
                     </a>
                   </div>
