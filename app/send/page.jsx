@@ -44,6 +44,15 @@ function parseCSV(text) {
 
 const SITE_URL = "https://e-wedding-invitation-beta.vercel.app";
 
+function encodeWhatsAppText(text) {
+  // Keep non-ASCII (emojis, accented chars) as raw Unicode — some WhatsApp clients
+  // mis-decode percent-encoded emoji as replacement chars (��).
+  return [...text].map((char) => {
+    if (char.codePointAt(0) > 0x7f) return char;
+    return encodeURIComponent(char);
+  }).join("");
+}
+
 function buildLink(phone, countryCode, template, name, attendees) {
   const clean = countryCode.replace(/\D/g, "") + phone.replace(/\D/g, "");
   const personalizedUrl = `${SITE_URL}?name=${encodeURIComponent(name)}&guests=${attendees}`;
@@ -51,7 +60,7 @@ function buildLink(phone, countryCode, template, name, attendees) {
     .replace(/\{name\}/gi, name)
     .replace(/\{attendees\}/gi, String(attendees))
     .replace(/\{link\}/gi, personalizedUrl);
-  return `https://wa.me/${clean}?text=${encodeURIComponent(msg)}`;
+  return `https://wa.me/${clean}?text=${encodeWhatsAppText(msg)}`;
 }
 
 export default function SendPage() {

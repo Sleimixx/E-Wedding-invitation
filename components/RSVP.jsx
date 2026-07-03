@@ -5,6 +5,7 @@ import { useSearchParams } from "next/navigation";
 export default function RSVP() {
   const searchParams = useSearchParams();
   const [name, setName] = useState("");
+  const [nameLocked, setNameLocked] = useState(false);
   const [attending, setAttending] = useState(null);
   const [persons, setPersons] = useState(1);
   const [allocatedGuests, setAllocatedGuests] = useState(2);
@@ -17,9 +18,7 @@ export default function RSVP() {
     const guestsParam = searchParams.get("guests");
     if (guestName) {
       setName(guestName);
-      setTimeout(() => {
-        sectionRef.current?.scrollIntoView({ behavior: "smooth" });
-      }, 800);
+      setNameLocked(true);
     }
     if (guestsParam) {
       const count = Math.max(1, parseInt(guestsParam, 10) || 1);
@@ -69,10 +68,11 @@ export default function RSVP() {
 
         <form className="rsvp-slide-form" onSubmit={onSubmit}>
           <input
-            className="rsvp-slide-input"
+            className={`rsvp-slide-input${nameLocked ? " rsvp-slide-input--locked" : ""}`}
             type="text"
             value={name}
-            onChange={(e) => setName(e.target.value)}
+            onChange={nameLocked ? undefined : (e) => setName(e.target.value)}
+            readOnly={nameLocked}
             placeholder="Full Name"
             required
           />
