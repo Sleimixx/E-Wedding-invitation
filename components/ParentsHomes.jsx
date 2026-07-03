@@ -10,7 +10,6 @@ export default function ParentsHomes() {
         <div className="parents-grid">
           <div className="parents-card">
             <p className="parents-card-label">Groom&apos;s House</p>
-            <p className="parents-card-names">Edgard &amp; Marleine Eid</p>
             <a
               className="parents-map-btn"
               href="https://www.google.com/maps?q=33.9681255,35.6181734&z=17&hl=en"
@@ -25,7 +24,6 @@ export default function ParentsHomes() {
 
           <div className="parents-card">
             <p className="parents-card-label">Bride&apos;s House</p>
-            <p className="parents-card-names">Henri &amp; Josiane Eid</p>
             <a
               className="parents-map-btn"
               href="https://goo.gl/maps/sTgHckPVpkDuB3JU7"
