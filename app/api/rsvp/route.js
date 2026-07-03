@@ -18,17 +18,12 @@ export async function POST(request) {
     await ensureTable();
     const existing = await sql`SELECT id FROM rsvps WHERE LOWER(name) = LOWER(${name}) LIMIT 1`;
     if (existing.rows.length > 0) {
-      await sql`
-        UPDATE rsvps
-        SET attending = ${attending}, guest_count = ${guestCount}, plus_ones = ${plusOnes}
-        WHERE LOWER(name) = LOWER(${name})
-      `;
-    } else {
-      await sql`
-        INSERT INTO rsvps (name, attending, guest_count, plus_ones)
-        VALUES (${name}, ${attending}, ${guestCount}, ${plusOnes})
-      `;
+      return NextResponse.json({ error: "You have already submitted your RSVP." }, { status: 409 });
     }
+    await sql`
+      INSERT INTO rsvps (name, attending, guest_count, plus_ones)
+      VALUES (${name}, ${attending}, ${guestCount}, ${plusOnes})
+    `;
     return NextResponse.json({ ok: true });
   } catch (err) {
     console.error("RSVP error:", err);
