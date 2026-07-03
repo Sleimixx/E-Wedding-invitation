@@ -1,18 +1,27 @@
 "use client";
-import { useRef } from "react";
+import { useRef, useEffect } from "react";
 
 export default function Hero({ config, onStart }) {
   const { date } = config;
   const sectionRef = useRef(null);
 
+  useEffect(() => {
+    const hero = sectionRef.current;
+    if (!hero) return;
+    // Block touch-scroll from hero until button is tapped
+    hero.style.touchAction = "none";
+    return () => { hero.style.touchAction = ""; };
+  }, []);
+
   function handleTap() {
+    // Unlock swipe navigation before advancing
+    if (sectionRef.current) sectionRef.current.style.touchAction = "";
     onStart?.();
     const next = sectionRef.current?.nextElementSibling;
     if (next) next.scrollIntoView({ behavior: "instant" });
   }
 
   return (
-    // Entire slide is the tap target — any tap starts music and advances
     <section className="hero" ref={sectionRef} onClick={handleTap}>
       <div className="slide-bg" />
       <div className="slide-overlay" />
