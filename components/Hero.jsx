@@ -22,7 +22,7 @@ export default function Hero({ config, onStart }) {
   }
 
   return (
-    <section className="hero" ref={sectionRef} onClick={handleTap}>
+    <section className="hero" ref={sectionRef}>
       <div className="slide-bg" />
       <div className="slide-overlay" />
 
@@ -37,7 +37,7 @@ export default function Hero({ config, onStart }) {
         <div className="hero-date">{date.display}</div>
       </div>
 
-      <div className="hero-start-btn">
+      <div className="hero-start-btn" onClick={handleTap}>
         <span className="hero-start-label">Tap to Start</span>
         <span className="hero-start-arrow">↑</span>
       </div>
