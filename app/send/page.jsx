@@ -2,6 +2,23 @@
 import { useState, useRef, useCallback } from "react";
 import * as XLSX from "xlsx";
 
+function findColumns(headers) {
+  const nameIdx = headers.findIndex((h) => h.includes("name"));
+  // Prefer explicit "phone"/"tel" over bare "number" to avoid matching "number of attendees"
+  const phoneIdx = (() => {
+    const i = headers.findIndex((h) => h.includes("phone") || h.includes("tel"));
+    if (i !== -1) return i;
+    return headers.findIndex((h) => h.includes("number") && !h.includes("attend") && !h.includes("area") && !h.includes("code"));
+  })();
+  const areaCodeIdx = headers.findIndex((h) => h.includes("area") || (h.includes("code") && !h.includes("post") && !h.includes("zip")));
+  const attendeesIdx = headers.findIndex((h) => h.includes("attend") || h.includes("guest") || h.includes("person"));
+  return { nameIdx, phoneIdx, areaCodeIdx, attendeesIdx };
+}
+
+function parseAreaCode(raw) {
+  return String(raw ?? "").replace(/\D/g, "");
+}
+
 function parseExcel(buffer) {
   const wb = XLSX.read(buffer, { type: "array" });
   const ws = wb.Sheets[wb.SheetNames[0]];
@@ -9,9 +26,7 @@ function parseExcel(buffer) {
   if (rows.length < 2) throw new Error("File is empty.");
 
   const headers = rows[0].map((h) => String(h).trim().toLowerCase());
-  const nameIdx = headers.findIndex((h) => h.includes("name"));
-  const phoneIdx = headers.findIndex((h) => h.includes("phone") || h.includes("number") || h.includes("tel"));
-  const attendeesIdx = headers.findIndex((h) => h.includes("attend") || h.includes("guest") || h.includes("person"));
+  const { nameIdx, phoneIdx, areaCodeIdx, attendeesIdx } = findColumns(headers);
 
   if (nameIdx === -1) throw new Error("Missing 'Name' column.");
   if (phoneIdx === -1) throw new Error("Missing 'Phone number' column.");
@@ -19,6 +34,7 @@ function parseExcel(buffer) {
   return rows.slice(1).filter((r) => r[nameIdx]).map((r) => ({
     name: String(r[nameIdx] ?? "").trim(),
     phone: String(r[phoneIdx] ?? "").trim().replace(/[\s\-().+]/g, ""),
+    areaCode: areaCodeIdx !== -1 ? parseAreaCode(r[areaCodeIdx]) : "",
     attendees: attendeesIdx !== -1 ? Number(r[attendeesIdx]) || 1 : 1,
   }));
 }
@@ -26,9 +42,7 @@ function parseExcel(buffer) {
 function parseCSV(text) {
   const lines = text.trim().split(/\r?\n/);
   const headers = lines[0].split(",").map((h) => h.trim().toLowerCase());
-  const nameIdx = headers.findIndex((h) => h.includes("name"));
-  const phoneIdx = headers.findIndex((h) => h.includes("phone") || h.includes("number") || h.includes("tel"));
-  const attendeesIdx = headers.findIndex((h) => h.includes("attend") || h.includes("guest") || h.includes("person"));
+  const { nameIdx, phoneIdx, areaCodeIdx, attendeesIdx } = findColumns(headers);
 
   if (nameIdx === -1 || phoneIdx === -1) throw new Error("CSV must have a 'name' and a 'phone' column.");
 
@@ -37,6 +51,7 @@ function parseCSV(text) {
     return {
       name: cols[nameIdx],
       phone: cols[phoneIdx].replace(/[\s\-().+]/g, ""),
+      areaCode: areaCodeIdx !== -1 ? parseAreaCode(cols[areaCodeIdx]) : "",
       attendees: attendeesIdx !== -1 ? Number(cols[attendeesIdx]) || 1 : 1,
     };
   });
@@ -74,8 +89,9 @@ Henry & Estelle
   const [copied, setCopied] = useState(null);
   const fileRef = useRef(null);
 
-  const handleSend = useCallback((i, phone, rawMsg) => {
-    const clean = countryCode.replace(/\D/g, "") + phone.replace(/\D/g, "");
+  const handleSend = useCallback((i, guest, rawMsg) => {
+    const code = (guest.areaCode || countryCode).replace(/\D/g, "");
+    const clean = code + guest.phone.replace(/\D/g, "");
     navigator.clipboard.writeText(rawMsg).catch(() => {});
     setCopied(i);
     setTimeout(() => setCopied((c) => (c === i ? null : c)), 3000);
@@ -130,8 +146,8 @@ Henry & Estelle
           <div className="send-step-body">
             <p className="send-step-label">Upload guest list</p>
             <p className="send-step-hint">
-              Supports <strong>.xlsx</strong> and <strong>.csv</strong>. Columns needed:{" "}
-              <strong>Name</strong>, <strong>Phone number</strong>, <strong>Number of attendees</strong>.
+              Supports <strong>.xlsx</strong> and <strong>.csv</strong>. Columns:{" "}
+              <strong>Name</strong>, <strong>Area code</strong> (optional), <strong>Phone number</strong>, <strong>Number of attendees</strong>.
             </p>
             <div className="send-file-row">
               <button className="send-upload-btn" onClick={() => fileRef.current?.click()}>
@@ -205,11 +221,11 @@ Henry & Estelle
                   <div key={i} className="send-row">
                     <div className="send-guest-info">
                       <span className="send-guest-name">{g.name}</span>
-                      <span className="send-guest-phone">+{countryCode} {g.phone} · {g.attendees} pax</span>
+                      <span className="send-guest-phone">+{g.areaCode || countryCode} {g.phone} · {g.attendees} pax</span>
                     </div>
                     <button
                       className={`send-wa-btn${copied === i ? " send-wa-btn--copied" : ""}`}
-                      onClick={() => handleSend(i, g.phone, g.msg)}
+                      onClick={() => handleSend(i, g, g.msg)}
                     >
                       {copied === i ? "Copied ✓" : "Send ↗"}
                     </button>
