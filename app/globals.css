@@ -345,6 +345,14 @@ button {
   .parents-grid { flex-direction: column; }
 }
 
+.parents-card-label {
+  font-size: 0.75rem;
+  letter-spacing: 0.25em;
+  text-transform: uppercase;
+  color: var(--color-accent);
+  opacity: 0.9;
+}
+
 .parents-card-names {
   font-family: var(--font-script);
   font-size: clamp(1.3rem, 3.5vw, 1.8rem);
