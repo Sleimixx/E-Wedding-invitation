@@ -832,6 +832,8 @@ button {
 }
 
 .send-wa-btn:hover { opacity: 0.85; color: white; }
+.send-wa-btn--copied { background: #4caf50; }
+.send-wa-btn--copied:hover { opacity: 1; }
 
 .send-total {
   font-size: 0.85rem;

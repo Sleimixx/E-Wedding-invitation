@@ -1,5 +1,5 @@
 "use client";
-import { useState, useRef } from "react";
+import { useState, useRef, useCallback } from "react";
 import * as XLSX from "xlsx";
 
 function parseExcel(buffer) {
@@ -44,23 +44,12 @@ function parseCSV(text) {
 
 const SITE_URL = "https://e-wedding-invitation-beta.vercel.app";
 
-function encodeWhatsAppText(text) {
-  // Keep non-ASCII (emojis, accented chars) as raw Unicode — some WhatsApp clients
-  // mis-decode percent-encoded emoji as replacement chars (��).
-  return [...text].map((char) => {
-    if (char.codePointAt(0) > 0x7f) return char;
-    return encodeURIComponent(char);
-  }).join("");
-}
-
-function buildLink(phone, countryCode, template, name, attendees) {
-  const clean = countryCode.replace(/\D/g, "") + phone.replace(/\D/g, "");
+function buildMessage(template, name, attendees) {
   const personalizedUrl = `${SITE_URL}?name=${encodeURIComponent(name)}&guests=${attendees}`;
-  const msg = template
+  return template
     .replace(/\{name\}/gi, name)
     .replace(/\{attendees\}/gi, String(attendees))
     .replace(/\{link\}/gi, personalizedUrl);
-  return `https://wa.me/${clean}?text=${encodeWhatsAppText(msg)}`;
 }
 
 export default function SendPage() {
@@ -82,7 +71,16 @@ Henry & Estelle
   );
   const [error, setError] = useState("");
   const [fileName, setFileName] = useState("");
+  const [copied, setCopied] = useState(null);
   const fileRef = useRef(null);
+
+  const handleSend = useCallback((i, phone, rawMsg) => {
+    const clean = countryCode.replace(/\D/g, "") + phone.replace(/\D/g, "");
+    navigator.clipboard.writeText(rawMsg).catch(() => {});
+    setCopied(i);
+    setTimeout(() => setCopied((c) => (c === i ? null : c)), 3000);
+    window.open(`https://wa.me/${clean}`, "_blank", "noopener,noreferrer");
+  }, [countryCode]);
 
   function handleFile(e) {
     const file = e.target.files[0];
@@ -117,7 +115,7 @@ Henry & Estelle
   }
 
   const links = template && guests.length
-    ? guests.map((g) => ({ ...g, url: buildLink(g.phone, countryCode, template, g.name, g.attendees) }))
+    ? guests.map((g) => ({ ...g, msg: buildMessage(template, g.name, g.attendees) }))
     : [];
 
   return (
@@ -201,7 +199,7 @@ Henry & Estelle
             <div className="send-step-num">4</div>
             <div className="send-step-body">
               <p className="send-step-label">Send messages</p>
-              <p className="send-step-hint">Tap a button — WhatsApp opens with the message pre-filled.</p>
+              <p className="send-step-hint">Tap a button — message is copied to clipboard and WhatsApp opens. Just paste and send.</p>
               <div className="send-list">
                 {links.map((g, i) => (
                   <div key={i} className="send-row">
@@ -209,9 +207,12 @@ Henry & Estelle
                       <span className="send-guest-name">{g.name}</span>
                       <span className="send-guest-phone">+{countryCode} {g.phone} · {g.attendees} pax</span>
                     </div>
-                    <a className="send-wa-btn" href={g.url} target="_blank" rel="noopener noreferrer">
-                      Send ↗
-                    </a>
+                    <button
+                      className={`send-wa-btn${copied === i ? " send-wa-btn--copied" : ""}`}
+                      onClick={() => handleSend(i, g.phone, g.msg)}
+                    >
+                      {copied === i ? "Copied ✓" : "Send ↗"}
+                    </button>
                   </div>
                 ))}
               </div>
