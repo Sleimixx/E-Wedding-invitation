@@ -79,7 +79,7 @@ Henry & Estelle
     navigator.clipboard.writeText(rawMsg).catch(() => {});
     setCopied(i);
     setTimeout(() => setCopied((c) => (c === i ? null : c)), 3000);
-    window.open(`https://wa.me/${clean}`, "_blank", "noopener,noreferrer");
+    window.open(`https://wa.me/${clean}?text=${encodeURIComponent(rawMsg)}`, "_blank", "noopener,noreferrer");
   }, [countryCode]);
 
   function handleFile(e) {
